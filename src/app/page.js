@@ -127,7 +127,6 @@ const ExcalidrawWithDesmos = () => {
     console.log( 1 );
     fabric.FabricImage.fromURL( thumbnail ).then( img => {
       img.scale( .5 );
-      img.selectable = false;
       CANVAS.add( img );
       CANVAS.renderAll();
     } );
