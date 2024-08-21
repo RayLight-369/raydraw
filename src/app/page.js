@@ -46,14 +46,6 @@ const ExcalidrawWithDesmos = () => {
     Canvas.current = canvas;
     setCanvas( canvas );
 
-    canvas.add( new fabric.Rect( {
-      width: 20,
-      height: 20,
-      fill: "red",
-      left: 10,
-      top: 10
-    } ) );
-
     return () => {
       canvas.dispose();
     };
