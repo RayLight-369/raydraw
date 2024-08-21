@@ -1,3 +1,4 @@
+import Canvas from "../Contexts/Canvas";
 import "./globals.css";
 
 export const metadata = {
@@ -16,7 +17,9 @@ export default function RootLayout ( { children } ) {
     <html lang="en">
       <body className="w-screen h-screen">
         <main className="w-full h-full">
+          {/* <Canvas> */ }
           { children }
+          {/* </Canvas> */ }
         </main>
       </body>
     </html>

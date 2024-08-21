@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import FabricWrapper from '../Components/FabricWrapper';
+import * as fabric from 'fabric'; // v6
+import Header from '../Components/Header';
 // import GraphingCalculator from '../Components/Desmos';
 
 const ExcalidrawWrapper = dynamic(
@@ -19,11 +22,44 @@ const GraphingCalculator = dynamic(
 );
 
 const ExcalidrawWithDesmos = () => {
-  const [ excalidrawAPI, setExcalidrawAPI ] = useState( null );
+  // const [ excalidrawAPI, setExcalidrawAPI ] = useState( null );
   const [ desmosClose, setDesmosClose ] = useState( true );
 
-  const [ elements, setElements ] = useState( [] );
-  const [ appState, setAppState ] = useState( {} );
+  const CanvasElement = useRef( null );
+  const Canvas = useRef( null );
+  const [ CANVAS, setCanvas ] = useState( null );
+
+  const [ selectedTool, setSelectedTool ] = useState( "rectangle" );
+
+
+
+
+
+  useEffect( () => {
+
+    const canvas = new fabric.Canvas( CanvasElement.current, {
+      backgroundColor: "white",
+      width: window.innerWidth,
+      height: window.innerHeight
+    } );
+
+    Canvas.current = canvas;
+    setCanvas( canvas );
+
+    canvas.add( new fabric.Rect( {
+      width: 20,
+      height: 20,
+      fill: "red",
+      left: 10,
+      top: 10
+    } ) );
+
+    return () => {
+      canvas.dispose();
+    };
+
+  }, [] );
+
 
 
   // const addImageToExcalidraw = ( src ) => {
@@ -95,10 +131,14 @@ const ExcalidrawWithDesmos = () => {
   };
 
   return (
-    <div className='flex w-full h-full'>
-      <ExcalidrawWrapper elements={ elements } appState={ appState } setElements={ setElements } setAppState={ setAppState } setApi={ setExcalidrawAPI } openDesmos={ () => setDesmosClose( false ) } />
-      { !desmosClose && <GraphingCalculator onGraphImageAdded={ onGraphImageAdded } onClose={ () => setDesmosClose( true ) } /> }
-    </div>
+    <>
+      <Header selectedTool={ selectedTool } setSelectedTool={ setSelectedTool } canvas={ CANVAS } />
+      {/* <div className='flex w-full h-full'> */ }
+      {/* <ExcalidrawWrapper elements={ elements } appState={ appState } setElements={ setElements } setAppState={ setAppState } setApi={ setExcalidrawAPI } openDesmos={ () => setDesmosClose( false ) } /> */ }
+      <canvas ref={ CanvasElement } />
+      {/* { !desmosClose && <GraphingCalculator onGraphImageAdded={ onGraphImageAdded } onClose={ () => setDesmosClose( true ) } /> } */ }
+
+    </>
   );
 };
 
