@@ -72,6 +72,8 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
   };
 
   const [ TOOLS, dispatch ] = useReducer( ( state, action ) => {
+    setSelectedTool( action.type.toLowerCase() );
+
     switch ( action.type.toLowerCase() ) {
       case "select":
       case "selection": {
@@ -244,7 +246,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
       <div className="tools flex gap-[6px]">
         { Object.entries( TOOLS ).map( ( [ key, val ] ) => (
           <button key={ key } title={ key } onClick={ () => {
-            dispatch( { type: key } );
             dispatch( { type: key } );
           } } className='w-[36px] h-full p-[10px] aspect-square flex items-center justify-center bg-violet-200 rounded-lg'>
             { val.appearance }
