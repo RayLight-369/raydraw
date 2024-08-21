@@ -40,7 +40,7 @@ const GraphingCalculator = ( { onGraphImageAdded, onClose } ) => {
 
   return (
     <div className="graphing-calculator-modal fixed z-[100] top-16 right-2 bg-white p-4 shadow-lg">
-      <div ref={ calculatorRef } className='w-[600px] h-[400px]' />
+      <div ref={ calculatorRef } className='w-[100vw] h-[400px] md:w-[600px]' />
       <div className="mt-4 flex justify-end">
         <button className="mr-2 bg-blue-500 text-white px-4 py-2 rounded" onClick={ handleAddGraphToCanvas }>
           Add to Canvas
