@@ -29,7 +29,7 @@ const ExcalidrawWithDesmos = () => {
   const Canvas = useRef( null );
   const [ CANVAS, setCanvas ] = useState( null );
 
-  const [ selectedTool, setSelectedTool ] = useState( "rectangle" );
+  const [ selectedTool, setSelectedTool ] = useState( "selection" );
 
 
 
@@ -76,59 +76,71 @@ const ExcalidrawWithDesmos = () => {
 
     // console.log( thumbnail );
 
-    const id = Date.now();
+    // const id = Date.now();
 
-    const imageElement = {
-      type: 'image',
-      version: 1,
-      versionNonce: id,
-      isDeleted: false,
-      id,
-      fillStyle: 'hachure',
-      strokeWidth: 1,
-      strokeStyle: 'solid',
-      roughness: 1,
-      opacity: 100,
-      angle: 0,
-      x: 100,
-      y: 100,
-      width: 200,
-      height: 200,
-      seed: 1,
-      strokeColor: '#000000',
-      backgroundColor: 'transparent',
-      fileId: id,
-      scale: [ 1, 1 ],
-      groupIds: [],
-      status: 'saved',
-      file: thumbnail
-    };
+    // const imageElement = {
+    //   type: 'image',
+    //   version: 1,
+    //   versionNonce: id,
+    //   isDeleted: false,
+    //   id,
+    //   fillStyle: 'hachure',
+    //   strokeWidth: 1,
+    //   strokeStyle: 'solid',
+    //   roughness: 1,
+    //   opacity: 100,
+    //   angle: 0,
+    //   x: 100,
+    //   y: 100,
+    //   width: 200,
+    //   height: 200,
+    //   seed: 1,
+    //   strokeColor: '#000000',
+    //   backgroundColor: 'transparent',
+    //   fileId: id,
+    //   scale: [ 1, 1 ],
+    //   groupIds: [],
+    //   status: 'saved',
+    //   file: thumbnail
+    // };
 
-    excalidrawAPI.updateScene( {
-      elements: [ ...excalidrawAPI.getSceneElements(), imageElement ],
-      appState: excalidrawAPI.getAppState(),
-      commitToHistory: true,
-    } );
+    // excalidrawAPI.updateScene( {
+    //   elements: [ ...excalidrawAPI.getSceneElements(), imageElement ],
+    //   appState: excalidrawAPI.getAppState(),
+    //   commitToHistory: true,
+    // } );
 
-    excalidrawAPI.addFiles( [
-      {
-        mimeType: "image/png",
-        dataURL: thumbnail,
-        id: id,
-        created: Date.now()
-      }
-    ] );
+    // excalidrawAPI.addFiles( [
+    //   {
+    //     mimeType: "image/png",
+    //     dataURL: thumbnail,
+    //     id: id,
+    //     created: Date.now()
+    //   }
+    // ] );
+
+
 
     // excalidrawAPI.addFiles( [ thumbnail ] );
+
+
+    console.log( 1 );
+    fabric.FabricImage.fromURL( thumbnail ).then( img => {
+      img.scale( .5 );
+      img.selectable = false;
+      CANVAS.add( img );
+      CANVAS.renderAll();
+    } );
+
   };
 
   return (
     <>
-      <Header selectedTool={ selectedTool } setSelectedTool={ setSelectedTool } canvas={ CANVAS } />
+      <Header selectedTool={ selectedTool } setSelectedTool={ setSelectedTool } canvas={ CANVAS } openDesmos={ () => setDesmosClose( false ) } />
       {/* <div className='flex w-full h-full'> */ }
       {/* <ExcalidrawWrapper elements={ elements } appState={ appState } setElements={ setElements } setAppState={ setAppState } setApi={ setExcalidrawAPI } openDesmos={ () => setDesmosClose( false ) } /> */ }
       <canvas ref={ CanvasElement } />
-      {/* { !desmosClose && <GraphingCalculator onGraphImageAdded={ onGraphImageAdded } onClose={ () => setDesmosClose( true ) } /> } */ }
+      { !desmosClose && <GraphingCalculator onGraphImageAdded={ onGraphImageAdded } onClose={ () => setDesmosClose( true ) } /> }
 
     </>
   );

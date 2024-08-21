@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import * as fabric from 'fabric';
 
-const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
+const Header = ( { selectedTool, setSelectedTool, canvas, openDesmos } ) => {
 
   const changeSelectable = ( val ) => {
     canvas.forEachObject( function ( obj ) {
@@ -18,6 +18,10 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
 
   const [ TOOLS, dispatch ] = useReducer( ( state, action ) => {
     setSelectedTool( action.type.toLowerCase() );
+    resetCurrentEvents();
+    canvas.isDrawingMode = true;
+    canvas.selection = false;
+    changeSelectable( false );
 
     switch ( action.type.toLowerCase() ) {
       case "select":
@@ -25,7 +29,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
         setSelectedTool( "selection" );
         canvas.isDrawingMode = false;
         canvas.selection = true;
-        resetCurrentEvents();
         changeSelectable( true );
 
         return state;
@@ -33,10 +36,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
       case "rect":
       case "rectangle": {
         setSelectedTool( "rectangle" );
-        canvas.isDrawingMode = false;
-        canvas.selection = false;
-        changeSelectable( false );
-        resetCurrentEvents();
 
         const addRectangle = ( opt ) => {
 
@@ -104,10 +103,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
       }
       case "circle": {
         setSelectedTool( "circle" );
-        canvas.isDrawingMode = false;
-        canvas.selection = false;
-        changeSelectable( false );
-        resetCurrentEvents();
 
         const addCircle = ( opt ) => {
           const pointer = canvas.getPointer( opt.e );
@@ -161,23 +156,23 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
   }, {
     "Selection": {
       appearance: (
-        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 22 22" class="" fill="none" stroke-width="1.25"><g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 6l4.153 11.793a0.365 .365 0 0 0 .331 .207a0.366 .366 0 0 0 .332 -.207l2.184 -4.793l4.787 -1.994a0.355 .355 0 0 0 .213 -.323a0.355 .355 0 0 0 -.213 -.323l-11.787 -4.36z"></path><path d="M13.5 13.5l4.5 4.5"></path></g></svg>
+        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 22 22" fill="none" strokeWidth="1.25"><g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 6l4.153 11.793a0.365 .365 0 0 0 .331 .207a0.366 .366 0 0 0 .332 -.207l2.184 -4.793l4.787 -1.994a0.355 .355 0 0 0 .213 -.323a0.355 .355 0 0 0 -.213 -.323l-11.787 -4.36z"></path><path d="M13.5 13.5l4.5 4.5"></path></g></svg>
       )
     },
     "Rectangle": {
       appearance: (
-        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 24 24" class="" fill="none" stroke-width="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><g stroke-width="1.5"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect></g></svg>
+        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><g strokeWidth="1.5"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect></g></svg>
       )
     },
     "Circle": {
       appearance: (
-        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 24 24" class="" fill="none" stroke-width="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><g stroke-width="1.5"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle></g></svg>
+        <svg aria-hidden="true" focusable="false" role="img" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><g strokeWidth="1.5"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle></g></svg>
       )
     }
   } );
 
   return (
-    <header className='fixed top-3 left-1/2 -translate-x-1/2 w-[70vw] p-[4.5px] px-[5.5px] rounded-lg shadow-[0px_0px_0.9310142993927002px_0px_rgba(0,_0,_0,_0.17),_0px_0px_3.1270833015441895px_0px_rgba(0,_0,_0,_0.08),_0px_7px_14px_0px_rgba(0,_0,_0,_0.05)] flex items-center z-[999]'>
+    <header className='fixed top-3 left-1/2 -translate-x-1/2 w-[70vw] p-[4.5px] px-[5.5px] rounded-lg shadow-[0px_0px_0.9310142993927002px_0px_rgba(0,_0,_0,_0.17),_0px_0px_3.1270833015441895px_0px_rgba(0,_0,_0,_0.08),_0px_7px_14px_0px_rgba(0,_0,_0,_0.05)] flex items-center justify-between z-[999]'>
       <div className="tools flex gap-[6px]">
         { Object.entries( TOOLS ).map( ( [ key, val ] ) => (
           <button key={ key } title={ key } onClick={ () => {
@@ -187,6 +182,7 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
           </button>
         ) ) }
       </div>
+      <button className='w-max py-[10px] bg-violet-400 hover:bg-violet-500 text-sm text-white px-4 rounded' onClick={ openDesmos }>Desmos</button>
     </header>
   );
 };
