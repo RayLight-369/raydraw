@@ -243,7 +243,10 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
     <header className='fixed top-3 left-1/2 -translate-x-1/2 w-[70vw] p-[4.5px] px-[5.5px] rounded-lg shadow-[0px_0px_0.9310142993927002px_0px_rgba(0,_0,_0,_0.17),_0px_0px_3.1270833015441895px_0px_rgba(0,_0,_0,_0.08),_0px_7px_14px_0px_rgba(0,_0,_0,_0.05)] flex items-center z-[999]'>
       <div className="tools flex gap-[6px]">
         { Object.entries( TOOLS ).map( ( [ key, val ] ) => (
-          <button key={ key } title={ key } onClick={ () => dispatch( { type: key } ) } className='w-[36px] h-full p-[10px] aspect-square flex items-center justify-center bg-violet-200 rounded-lg'>
+          <button key={ key } title={ key } onClick={ () => {
+            dispatch( { type: key } );
+            dispatch( { type: key } );
+          } } className='w-[36px] h-full p-[10px] aspect-square flex items-center justify-center bg-violet-200 rounded-lg'>
             { val.appearance }
           </button>
         ) ) }
