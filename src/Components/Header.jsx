@@ -95,8 +95,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
 
         const addRectangle = ( opt ) => {
 
-          if ( selectedTool != "rectangle" ) return;
-
           const pointer = canvas?.getPointer( opt.e );
           let origX = pointer.x, origY = pointer.y;
 
@@ -115,8 +113,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
           canvas?.add( rect );
 
           const onMouseMove = ( opt ) => {
-
-            if ( selectedTool != "rectangle" ) return;
             // const pointer = canvas?.getPointer( opt.e );
             // rect.set( {
             //   width: pointer.x - rect.left,
@@ -145,7 +141,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
           };
 
           const onMouseUp = () => {
-            if ( selectedTool != "rectangle" ) return;
             rect.set( {
               selectable: true,
               evented: true,
@@ -170,8 +165,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
         resetCurrentEvents();
 
         const addCircle = ( opt ) => {
-          if ( selectedTool !== "circle" ) return;
-
           const pointer = canvas.getPointer( opt.e );
           let origX = pointer.x, origY = pointer.y;
 
@@ -189,8 +182,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
           canvas.add( circle );
 
           const onMouseMove = ( opt ) => {
-            if ( selectedTool !== "circle" ) return;
-
             const pointer = canvas.getPointer( opt.e );
             const radius = Math.sqrt( Math.pow( pointer.x - origX, 2 ) + Math.pow( pointer.y - origY, 2 ) ) / 2;
 
@@ -203,7 +194,6 @@ const Header = ( { selectedTool, setSelectedTool, canvas } ) => {
           };
 
           const onMouseUp = () => {
-            if ( selectedTool !== "circle" ) return;
             circle.set( {
               selectable: true,
               evented: true,
